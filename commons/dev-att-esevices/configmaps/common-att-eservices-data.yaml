@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-att-eservices-data
+  namespace: dev
+data:
+  DB_HOST: "interop-att-eservices-data-dev.cluster-cevisn7oellx.eu-south-1.rds.amazonaws.com"
+  DB_PORT: "5432"
+  DB_NAME: "dev_att_eservices"
+  DB_USE_SSL: "true"
+  DB_SCHEMA: "dev_att"

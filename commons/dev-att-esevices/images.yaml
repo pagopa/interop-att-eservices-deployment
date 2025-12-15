@@ -1,0 +1,6 @@
+images:
+  microservices:
+    residence-submission:
+      tag: "develop"
+    residence-verification:
+      tag: "develop"
