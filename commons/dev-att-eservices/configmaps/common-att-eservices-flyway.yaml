@@ -8,8 +8,8 @@ data:
     CREATE SCHEMA IF NOT EXISTS "${NAMESPACE}_att";
 
     GRANT USAGE ON SCHEMA "${NAMESPACE}_att" TO
-      "${NAMESPACE}_residence_submission_user",
-      "${NAMESPACE}_residence_verification_user";
+      "${NAMESPACE}_att_eservices_residence_submission_user",
+      "${NAMESPACE}_att_eservices_residence_verification_user";
 
     DO $$
     BEGIN
@@ -37,8 +37,8 @@ data:
       "updated_at" timestamp DEFAULT now() NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".digital_addresses (
       "id" bigserial PRIMARY KEY NOT NULL,
@@ -50,8 +50,8 @@ data:
       CONSTRAINT "email_check" CHECK (address ~ '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9.-]+)+$')
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".digital_addresses TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".digital_addresses TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".digital_addresses TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".digital_addresses TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".list_requests (
       "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -62,8 +62,8 @@ data:
       CONSTRAINT "list_requests_submitted_request_id_unique" UNIQUE("submitted_request_id")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".list_requests TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".list_requests TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".list_requests TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".list_requests TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".request_subjects (
       "list_request_id" uuid NOT NULL,
@@ -71,8 +71,8 @@ data:
       CONSTRAINT "request_subjects_list_request_id_subject_id_pk" PRIMARY KEY("list_request_id","subject_id")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".request_subjects TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".request_subjects TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".request_subjects TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".request_subjects TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".subject_data_responses (
       "id" bigserial PRIMARY KEY NOT NULL,
@@ -83,8 +83,8 @@ data:
       CONSTRAINT "id_subject_check" CHECK (subject_id ~ '^([0-9]{11})|([A-Za-z]{6}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{3}[A-Za-z]{1})$')
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".subject_data_responses TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".subject_data_responses TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".subject_data_responses TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".subject_data_responses TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".verification_logs (
       "id" bigserial PRIMARY KEY NOT NULL,
@@ -92,8 +92,8 @@ data:
       "checked_at" timestamp with time zone NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".verification_logs TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".verification_logs TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".verification_logs TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".verification_logs TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".verification_requests (
       "id" uuid PRIMARY KEY NOT NULL,
@@ -103,15 +103,15 @@ data:
       "updated_at" timestamp DEFAULT now() NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".verification_requests TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".verification_requests TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".verification_requests TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".verification_requests TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".purposes (
       "id" uuid PRIMARY KEY NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".purposes TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".purposes TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".purposes TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".purposes TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".family_status (
       "uuid" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -138,8 +138,8 @@ data:
       CONSTRAINT "family_status_subjectId_unique" UNIQUE("subjectId")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".family_status TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".family_status TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".family_status TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".family_status TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".addresses (
       "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -192,8 +192,8 @@ data:
       "fraction" text
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".addresses TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".addresses TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".addresses TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".addresses TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".subjects (
       "uuid" uuid NOT NULL,
@@ -218,8 +218,8 @@ data:
       "birth_no_day_month" text
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".subjects TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".subjects TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".subjects TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".subjects TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".fiscal_codes (
       "id" serial PRIMARY KEY NOT NULL,
@@ -229,15 +229,15 @@ data:
       CONSTRAINT "fiscal_codes_fiscal_code_unique" UNIQUE("fiscal_code")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".fiscal_codes TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".fiscal_codes TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".fiscal_codes TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".fiscal_codes TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".piva (
       "organization_id" text PRIMARY KEY NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".piva TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".piva TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".piva TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".piva TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".category (
       "id" bigserial PRIMARY KEY NOT NULL,
@@ -247,8 +247,8 @@ data:
       "order" integer NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".category TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".category TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".category TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".category TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".check (
       "id" bigserial PRIMARY KEY NOT NULL,
@@ -258,8 +258,8 @@ data:
       "category_id" bigserial NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".check TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".check TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".check TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".check TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".trial (
       "id" bigserial PRIMARY KEY NOT NULL,
@@ -273,24 +273,24 @@ data:
       "message" varchar(500)
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".handshakes (
       "apikey" text PRIMARY KEY NOT NULL,
       "context_key" text NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".handshakes TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".handshakes TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".handshakes TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".handshakes TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".signal_counters (
       "eservice_id" text PRIMARY KEY NOT NULL,
       "signal_id" bigint DEFAULT 0 NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".signal_counters TO "${NAMESPACE}_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".signal_counters TO "${NAMESPACE}_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".signal_counters TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}_att".signal_counters TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
   V1.1__alter_tables.sql: |-
     DO $$
