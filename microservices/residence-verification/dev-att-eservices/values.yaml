@@ -65,7 +65,7 @@ deployment:
     DATABASE_HOST: "common-att-eservices-data.DB_HOST"
     DATABASE_PORT: "common-att-eservices-data.DB_PORT"
     DATABASE_NAME: "common-att-eservices-data.DB_NAME"
-    DATABASE_SSL: "common-att-eservices-data.DB_SSL"
+    DATABASE_SSL: "common-att-eservices-data.DB_USE_SSL"
   envFromSecrets:
     DATABASE_USER: "platform-data-att-eservices-residence-verification-user.username"
     DATABASE_PASSWORD: "platform-data-att-eservices-residence-verification-user.password"
