@@ -26,10 +26,7 @@ configmap:
   TOKEN_INTEROPERABILITY_HOST: "https://dev.interop.pagopa.it/1.0"
   TOKEN_INTEROPERABILITY_KID: "2MJFa7aSSveFte8ULX9U-MaaygcoL6iBIJCRXBcba64"
   TOKEN_FROM_ACCESS_CODE: "https://auth.dev.interop.pagopa.it/token.oauth2"
-  KMS_LOCAL_CONFIG: "true"              #TO CHECK: shouldn't be necessary
-  AWS_CONFIG_FILE: "aws.config.local"   #TO CHECK: shouldn't be necessary
-  KMS_ENDPOINT: "http://localhost:4566" #TO CHECK: shouldn't be necessary
-  AWS_REGION: "us-east-1"               #TO CHECK: shouldn't be necessary 
+  KMS_LOCAL_CONFIG: "false"
   KMS_MAX_ACQUISITION_TIMEOUT_SECONDS: "60"
   KMS_KEYID: "7aaedd0d-15ea-4c26-876b-9647632c533b" #TO CHECK
   SIGNAL_HUB_HOST: "https://api.dev.signalhub.interop.pagopa.it"
