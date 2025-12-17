@@ -26,10 +26,7 @@ configmap:
   TOKEN_INTEROPERABILITY_HOST: "https://dev.interop.pagopa.it/1.0"
   TOKEN_INTEROPERABILITY_KID: "2MJFa7aSSveFte8ULX9U-MaaygcoL6iBIJCRXBcba64"
   TOKEN_FROM_ACCESS_CODE: "https://auth.dev.interop.pagopa.it/token.oauth2"
-  KMS_LOCAL_CONFIG: "true"              #TO CHECK: shouldn't be necessary
-  AWS_CONFIG_FILE: "aws.config.local"   #TO CHECK: shouldn't be necessary
-  KMS_ENDPOINT: "http://localhost:4566" #TO CHECK: shouldn't be necessary
-  AWS_REGION: "us-east-1"               #TO CHECK: shouldn't be necessary 
+  KMS_LOCAL_CONFIG: "false"
   KMS_MAX_ACQUISITION_TIMEOUT_SECONDS: "60"
   KMS_KEYID: "7aaedd0d-15ea-4c26-876b-9647632c533b" #TO CHECK
   SIGNAL_HUB_HOST: "https://api.dev.signalhub.interop.pagopa.it"
@@ -54,7 +51,7 @@ deployment:
     create: true
     version: "11.4.0"
     downloadRedshiftDriver: false
-    migrationsConfigmap: "flyway-platform-data"
+    migrationsConfigmap: "common-att-eservices-flyway"
     env:
       FLYWAY_CREATE_SCHEMAS: true
       FLYWAY_PLACEHOLDER_REPLACEMENT: true
@@ -62,23 +59,23 @@ deployment:
       FLYWAY_URL: jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)
       FLYWAY_SCHEMAS: "dev_att"
     envFromConfigmaps:
-      DB_HOST: "common-platform-data.DB_HOST"
-      DB_PORT: "common-platform-data.DB_PORT"
-      DB_NAME: "common-platform-data.DB_NAME"
+      DB_HOST: "common-att-eservices-data.DB_HOST"
+      DB_PORT: "common-att-eservices-data.DB_PORT"
+      DB_NAME: "common-att-eservices-data.DB_NAME"
     envFromSecrets:
-      FLYWAY_USER: "att-eservices-flyway-user.username"
-      FLYWAY_PASSWORD: "att-eservices-flyway-user.password"
+      FLYWAY_USER: "platform-data-att-eservices-flyway-user.username"
+      FLYWAY_PASSWORD: "platform-data-att-eservices-flyway-user.password"
   env:
     HOST: "0.0.0.0"
     PORT: "8080"
   envFromConfigmaps:
-    DATABASE_HOST: "common-platform-data.DB_HOST"
-    DATABASE_PORT: "common-platform-data.DB_PORT"
-    DATABASE_NAME: "common-platform-data.DB_NAME"
-    DATABASE_SSL: "common-platform-data.DB_SSL"
+    DATABASE_HOST: "common-att-eservices-data.DB_HOST"
+    DATABASE_PORT: "common-att-eservices-data.DB_PORT"
+    DATABASE_NAME: "common-att-eservices-data.DB_NAME"
+    DATABASE_SSL: "common-att-eservices-data.DB_SSL"
   envFromSecrets:
-    DATABASE_USER: "att-eservices-residence-submission-user.username"
-    DATABASE_PASSWORD: "att-eservices-residence-submission-user.password"
+    DATABASE_USER: "platform-data-att-eservices-residence-submission-user.username"
+    DATABASE_PASSWORD: "platform-data-att-eservices-residence-submission-user.password"
 
   livenessProbe:
     httpGet:

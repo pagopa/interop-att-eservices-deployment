@@ -1,6 +1,6 @@
 apiVersion: v2
 name: interop-att-eservices-deployment
-description: Interop Att Esservices
+description: Interop Att Eservices
 type: application
 version: 0.0.1
 dependencies:

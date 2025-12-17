@@ -1,4 +1,4 @@
-namespace: "dev"
+namespace: "dev-att-eservices"
 
 cronjob:
   env:
