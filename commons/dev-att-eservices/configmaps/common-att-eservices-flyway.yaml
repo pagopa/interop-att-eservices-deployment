@@ -274,7 +274,7 @@ data:
     );
 
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_verification_user";
 
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".handshakes (
       "apikey" text PRIMARY KEY NOT NULL,
