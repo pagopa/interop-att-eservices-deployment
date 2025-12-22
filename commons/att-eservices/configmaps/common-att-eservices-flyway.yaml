@@ -5,19 +5,19 @@ metadata:
   namespace: att-eservices
 data:
   V1.0__create_att_schema.sql: |-
-    CREATE SCHEMA IF NOT EXISTS "${NAMESPACE}_att";
+    CREATE SCHEMA IF NOT EXISTS "${NAMESPACE}";
 
-    GRANT USAGE ON SCHEMA "${NAMESPACE}_att" TO
-      "${NAMESPACE}_att_eservices_residence_submission_user",
-      "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT USAGE ON SCHEMA "${NAMESPACE}" TO
+      "${NAMESPACE}_eservices_residence_submission_user",
+      "${NAMESPACE}_eservices_residence_verification_user";
 
     DO $$
     BEGIN
       IF NOT EXISTS (
         SELECT 1 FROM pg_type
-        WHERE typname = 'motivation_termination_enum' AND typnamespace = '${NAMESPACE}_att'::regnamespace
+        WHERE typname = 'motivation_termination_enum' AND typnamespace = '${NAMESPACE}'::regnamespace
       ) THEN
-        CREATE TYPE "${NAMESPACE}_att"."motivation_termination_enum" AS ENUM ('CESSAZIONE_UFFICIO', 'CESSAZIONE_VOLONTARIA');
+        CREATE TYPE "${NAMESPACE}"."motivation_termination_enum" AS ENUM ('CESSAZIONE_UFFICIO', 'CESSAZIONE_VOLONTARIA');
       END IF;
     END $$;
 
@@ -25,56 +25,56 @@ data:
     BEGIN
       IF NOT EXISTS (
         SELECT 1 FROM pg_type
-        WHERE typname = 'status_processing_request_enum' AND typnamespace = '${NAMESPACE}_att'::regnamespace
+        WHERE typname = 'status_processing_request_enum' AND typnamespace = '${NAMESPACE}'::regnamespace
       ) THEN
-        CREATE TYPE "${NAMESPACE}_att"."status_processing_request_enum" AS ENUM ('PRESA_IN_CARICO', 'IN_ELABORAZIONE', 'DISPONIBILE');
+        CREATE TYPE "${NAMESPACE}"."status_processing_request_enum" AS ENUM ('PRESA_IN_CARICO', 'IN_ELABORAZIONE', 'DISPONIBILE');
       END IF;
     END $$;
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".data_preparation (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".data_preparation (
       "id_subject" text PRIMARY KEY NOT NULL,
       "created_at" timestamp DEFAULT now() NOT NULL,
       "updated_at" timestamp DEFAULT now() NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".data_preparation TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".data_preparation TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".digital_addresses (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".digital_addresses (
       "id" bigserial PRIMARY KEY NOT NULL,
       "subject_data_response_id" bigint NOT NULL,
       "address" varchar(255) NOT NULL,
       "profession" varchar(255),
-      "usage_reason" "${NAMESPACE}_att"."motivation_termination_enum" NOT NULL,
+      "usage_reason" "${NAMESPACE}"."motivation_termination_enum" NOT NULL,
       "usage_end_at" timestamp with time zone NOT NULL,
       CONSTRAINT "email_check" CHECK (address ~ '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9.-]+)+$')
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".digital_addresses TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".digital_addresses TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".digital_addresses TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".digital_addresses TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".list_requests (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".list_requests (
       "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
       "submitted_request_id" varchar(255) NOT NULL,
-      "status" "${NAMESPACE}_att"."status_processing_request_enum" NOT NULL,
+      "status" "${NAMESPACE}"."status_processing_request_enum" NOT NULL,
       "status_message" varchar(1024),
       "created_at" timestamp with time zone NOT NULL,
       CONSTRAINT "list_requests_submitted_request_id_unique" UNIQUE("submitted_request_id")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".list_requests TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".list_requests TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".list_requests TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".list_requests TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".request_subjects (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".request_subjects (
       "list_request_id" uuid NOT NULL,
       "subject_id" varchar(255) NOT NULL,
       CONSTRAINT "request_subjects_list_request_id_subject_id_pk" PRIMARY KEY("list_request_id","subject_id")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".request_subjects TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".request_subjects TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".request_subjects TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".request_subjects TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".subject_data_responses (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".subject_data_responses (
       "id" bigserial PRIMARY KEY NOT NULL,
       "list_request_id" uuid NOT NULL,
       "subject_id" varchar(255) NOT NULL,
@@ -83,19 +83,19 @@ data:
       CONSTRAINT "id_subject_check" CHECK (subject_id ~ '^([0-9]{11})|([A-Za-z]{6}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{3}[A-Za-z]{1})$')
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".subject_data_responses TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".subject_data_responses TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".subject_data_responses TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".subject_data_responses TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".verification_logs (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".verification_logs (
       "id" bigserial PRIMARY KEY NOT NULL,
       "result" boolean NOT NULL,
       "checked_at" timestamp with time zone NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".verification_logs TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".verification_logs TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".verification_logs TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".verification_logs TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".verification_requests (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".verification_requests (
       "id" uuid PRIMARY KEY NOT NULL,
       "count" integer NOT NULL,
       "json_request" jsonb NOT NULL,
@@ -103,17 +103,17 @@ data:
       "updated_at" timestamp DEFAULT now() NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".verification_requests TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".verification_requests TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".verification_requests TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".verification_requests TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".purposes (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".purposes (
       "id" uuid PRIMARY KEY NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".purposes TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".purposes TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".purposes TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".purposes TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".family_status (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".family_status (
       "uuid" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
       "id" varchar(64) NOT NULL,
       "subjectId" varchar(16) NOT NULL,
@@ -138,10 +138,10 @@ data:
       CONSTRAINT "family_status_subjectId_unique" UNIQUE("subjectId")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".family_status TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".family_status TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".family_status TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".family_status TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".addresses (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".addresses (
       "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
       "address_type" text,
       "note_address" text,
@@ -192,10 +192,10 @@ data:
       "fraction" text
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".addresses TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".addresses TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".addresses TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".addresses TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".subjects (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".subjects (
       "uuid" uuid NOT NULL,
       "id" text NOT NULL,
       "subject_id" text PRIMARY KEY NOT NULL,
@@ -218,10 +218,10 @@ data:
       "birth_no_day_month" text
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".subjects TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".subjects TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".subjects TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".subjects TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".fiscal_codes (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".fiscal_codes (
       "id" serial PRIMARY KEY NOT NULL,
       "fiscal_code" text NOT NULL,
       "created_at" timestamp DEFAULT now() NOT NULL,
@@ -229,17 +229,17 @@ data:
       CONSTRAINT "fiscal_codes_fiscal_code_unique" UNIQUE("fiscal_code")
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".fiscal_codes TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".fiscal_codes TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".fiscal_codes TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".fiscal_codes TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".piva (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".piva (
       "organization_id" text PRIMARY KEY NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".piva TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".piva TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".piva TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".piva TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".category (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".category (
       "id" bigserial PRIMARY KEY NOT NULL,
       "code" varchar(255) NOT NULL,
       "eservice" varchar(255) NOT NULL,
@@ -247,10 +247,10 @@ data:
       "order" integer NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".category TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".category TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".category TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".category TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".check (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".check (
       "id" bigserial PRIMARY KEY NOT NULL,
       "code" varchar(255) NOT NULL,
       "description" varchar(255),
@@ -258,10 +258,10 @@ data:
       "category_id" bigserial NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".check TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".check TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".check TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".check TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".trial (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".trial (
       "id" bigserial PRIMARY KEY NOT NULL,
       "purpose_id" varchar(255) NOT NULL,
       "correlation_id" varchar(255) NOT NULL,
@@ -273,36 +273,36 @@ data:
       "message" varchar(500)
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".trial TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".trial TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".handshakes (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".handshakes (
       "apikey" text PRIMARY KEY NOT NULL,
       "context_key" text NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".handshakes TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".handshakes TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".handshakes TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".handshakes TO "${NAMESPACE}_eservices_residence_verification_user";
 
-    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_att".signal_counters (
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}".signal_counters (
       "eservice_id" text PRIMARY KEY NOT NULL,
       "signal_id" bigint DEFAULT 0 NOT NULL
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".signal_counters TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT SELECT ON TABLE "${NAMESPACE}_att".signal_counters TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".signal_counters TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT SELECT ON TABLE "${NAMESPACE}".signal_counters TO "${NAMESPACE}_eservices_residence_verification_user";
 
   V1.1__alter_tables.sql: |-
     DO $$
     BEGIN
       IF EXISTS (
         SELECT FROM information_schema.tables
-        WHERE table_name = 'digital_addresses' AND table_schema = '${NAMESPACE}_att'
+        WHERE table_name = 'digital_addresses' AND table_schema = '${NAMESPACE}'
       ) AND NOT EXISTS (
         SELECT FROM information_schema.table_constraints
-        WHERE constraint_name = 'digital_addresses_subject_data_response_id_subject_data_responses_id_fk' AND table_schema = '${NAMESPACE}_att'
+        WHERE constraint_name = 'digital_addresses_subject_data_response_id_subject_data_responses_id_fk' AND table_schema = '${NAMESPACE}'
       ) THEN
-        ALTER TABLE "${NAMESPACE}_att"."digital_addresses" ADD CONSTRAINT "digital_addresses_subject_data_response_id_subject_data_responses_id_fk" FOREIGN KEY ("subject_data_response_id") REFERENCES "${NAMESPACE}_att"."subject_data_responses"("id") ON DELETE cascade ON UPDATE no action;
+        ALTER TABLE "${NAMESPACE}"."digital_addresses" ADD CONSTRAINT "digital_addresses_subject_data_response_id_subject_data_responses_id_fk" FOREIGN KEY ("subject_data_response_id") REFERENCES "${NAMESPACE}"."subject_data_responses"("id") ON DELETE cascade ON UPDATE no action;
       END IF;
     END $$;
 
@@ -310,12 +310,12 @@ data:
     BEGIN
       IF EXISTS (
         SELECT FROM information_schema.tables
-        WHERE table_name = 'request_subjects' AND table_schema = '${NAMESPACE}_att'
+        WHERE table_name = 'request_subjects' AND table_schema = '${NAMESPACE}'
       ) AND NOT EXISTS (
         SELECT FROM information_schema.table_constraints
-        WHERE constraint_name = 'request_subjects_list_request_id_list_requests_id_fk' AND table_schema = '${NAMESPACE}_att'
+        WHERE constraint_name = 'request_subjects_list_request_id_list_requests_id_fk' AND table_schema = '${NAMESPACE}'
       ) THEN
-        ALTER TABLE "${NAMESPACE}_att"."request_subjects" ADD CONSTRAINT "request_subjects_list_request_id_list_requests_id_fk" FOREIGN KEY ("list_request_id") REFERENCES "${NAMESPACE}_att"."list_requests"("id") ON DELETE cascade ON UPDATE no action;
+        ALTER TABLE "${NAMESPACE}"."request_subjects" ADD CONSTRAINT "request_subjects_list_request_id_list_requests_id_fk" FOREIGN KEY ("list_request_id") REFERENCES "${NAMESPACE}"."list_requests"("id") ON DELETE cascade ON UPDATE no action;
       END IF;
     END $$;
 
@@ -323,12 +323,12 @@ data:
     BEGIN
       IF EXISTS (
         SELECT FROM information_schema.tables
-        WHERE table_name = 'subject_data_responses' AND table_schema = '${NAMESPACE}_att'
+        WHERE table_name = 'subject_data_responses' AND table_schema = '${NAMESPACE}'
       ) AND NOT EXISTS (
         SELECT FROM information_schema.table_constraints
-        WHERE constraint_name = 'subject_data_responses_list_request_id_list_requests_id_fk' AND table_schema = '${NAMESPACE}_att'
+        WHERE constraint_name = 'subject_data_responses_list_request_id_list_requests_id_fk' AND table_schema = '${NAMESPACE}'
       ) THEN
-        ALTER TABLE "${NAMESPACE}_att"."subject_data_responses" ADD CONSTRAINT "subject_data_responses_list_request_id_list_requests_id_fk" FOREIGN KEY ("list_request_id") REFERENCES "${NAMESPACE}_att"."list_requests"("id") ON DELETE cascade ON UPDATE no action;
+        ALTER TABLE "${NAMESPACE}"."subject_data_responses" ADD CONSTRAINT "subject_data_responses_list_request_id_list_requests_id_fk" FOREIGN KEY ("list_request_id") REFERENCES "${NAMESPACE}"."list_requests"("id") ON DELETE cascade ON UPDATE no action;
       END IF;
     END $$;
 
@@ -336,12 +336,12 @@ data:
     BEGIN
       IF EXISTS (
         SELECT FROM information_schema.tables
-        WHERE table_name = 'addresses' AND table_schema = '${NAMESPACE}_att'
+        WHERE table_name = 'addresses' AND table_schema = '${NAMESPACE}'
       ) AND NOT EXISTS (
         SELECT FROM information_schema.table_constraints
-        WHERE constraint_name = 'addresses_subject_id_subjects_subject_id_fk' AND table_schema = '${NAMESPACE}_att'
+        WHERE constraint_name = 'addresses_subject_id_subjects_subject_id_fk' AND table_schema = '${NAMESPACE}'
       ) THEN
-        ALTER TABLE "${NAMESPACE}_att"."addresses" ADD CONSTRAINT "addresses_subject_id_subjects_subject_id_fk" FOREIGN KEY ("subject_id") REFERENCES "${NAMESPACE}_att"."subjects"("subject_id") ON DELETE no action ON UPDATE no action;
+        ALTER TABLE "${NAMESPACE}"."addresses" ADD CONSTRAINT "addresses_subject_id_subjects_subject_id_fk" FOREIGN KEY ("subject_id") REFERENCES "${NAMESPACE}"."subjects"("subject_id") ON DELETE no action ON UPDATE no action;
       END IF;
     END $$;
 
@@ -349,12 +349,12 @@ data:
     BEGIN
       IF EXISTS (
         SELECT FROM information_schema.tables
-        WHERE table_name = 'check' AND table_schema = '${NAMESPACE}_att'
+        WHERE table_name = 'check' AND table_schema = '${NAMESPACE}'
       ) AND NOT EXISTS (
         SELECT FROM information_schema.table_constraints
-        WHERE constraint_name = 'check_category_id_category_id_fk' AND table_schema = '${NAMESPACE}_att'
+        WHERE constraint_name = 'check_category_id_category_id_fk' AND table_schema = '${NAMESPACE}'
       ) THEN
-        ALTER TABLE "${NAMESPACE}_att"."check" ADD CONSTRAINT "check_category_id_category_id_fk" FOREIGN KEY ("category_id") REFERENCES "${NAMESPACE}_att"."category"("id") ON DELETE no action ON UPDATE no action;
+        ALTER TABLE "${NAMESPACE}"."check" ADD CONSTRAINT "check_category_id_category_id_fk" FOREIGN KEY ("category_id") REFERENCES "${NAMESPACE}"."category"("id") ON DELETE no action ON UPDATE no action;
       END IF;
     END $$;
 
@@ -362,12 +362,12 @@ data:
     BEGIN
       IF EXISTS (
         SELECT FROM information_schema.tables
-        WHERE table_name = 'trial' AND table_schema = '${NAMESPACE}_att'
+        WHERE table_name = 'trial' AND table_schema = '${NAMESPACE}'
       ) AND NOT EXISTS (
         SELECT FROM information_schema.table_constraints
-        WHERE constraint_name = 'trial_check_id_check_id_fk' AND table_schema = '${NAMESPACE}_att'
+        WHERE constraint_name = 'trial_check_id_check_id_fk' AND table_schema = '${NAMESPACE}'
       ) THEN
-        ALTER TABLE "${NAMESPACE}_att"."trial" ADD CONSTRAINT "trial_check_id_check_id_fk" FOREIGN KEY ("check_id") REFERENCES "${NAMESPACE}_att"."check"("id") ON DELETE no action ON UPDATE no action;
+        ALTER TABLE "${NAMESPACE}"."trial" ADD CONSTRAINT "trial_check_id_check_id_fk" FOREIGN KEY ("check_id") REFERENCES "${NAMESPACE}"."check"("id") ON DELETE no action ON UPDATE no action;
       END IF;
     END $$;
 
@@ -377,7 +377,7 @@ data:
       IF NOT EXISTS (
         SELECT FROM pg_indexes WHERE indexname = 'da_sdr_response_id_idx'
       ) THEN
-        CREATE INDEX "da_sdr_response_id_idx" ON "${NAMESPACE}_att"."digital_addresses" USING btree ("subject_data_response_id");
+        CREATE INDEX "da_sdr_response_id_idx" ON "${NAMESPACE}"."digital_addresses" USING btree ("subject_data_response_id");
       END IF;
     END $$;
 
@@ -386,7 +386,7 @@ data:
       IF NOT EXISTS (
         SELECT FROM pg_indexes WHERE indexname = 'lr_submitted_req_id_idx_list_requests'
       ) THEN
-        CREATE INDEX "lr_submitted_req_id_idx_list_requests" ON "${NAMESPACE}_att"."list_requests" USING btree ("submitted_request_id");
+        CREATE INDEX "lr_submitted_req_id_idx_list_requests" ON "${NAMESPACE}"."list_requests" USING btree ("submitted_request_id");
       END IF;
     END $$;
 
@@ -395,7 +395,7 @@ data:
       IF NOT EXISTS (
         SELECT FROM pg_indexes WHERE indexname = 'sdr_list_request_fk_idx_sdr'
       ) THEN
-        CREATE INDEX "sdr_list_request_fk_idx_sdr" ON "${NAMESPACE}_att"."subject_data_responses" USING btree ("list_request_id");
+        CREATE INDEX "sdr_list_request_fk_idx_sdr" ON "${NAMESPACE}"."subject_data_responses" USING btree ("list_request_id");
       END IF;
     END $$;
 
@@ -404,12 +404,12 @@ data:
       IF NOT EXISTS (
         SELECT FROM pg_indexes WHERE indexname = 'sdr_subject_id_idx_sdr'
       ) THEN
-        CREATE INDEX "sdr_subject_id_idx_sdr" ON "${NAMESPACE}_att"."subject_data_responses" USING btree ("subject_id");
+        CREATE INDEX "sdr_subject_id_idx_sdr" ON "${NAMESPACE}"."subject_data_responses" USING btree ("subject_id");
       END IF;
     END $$;
 
   V1.3__insert_data.sql: |-
-    INSERT INTO "${NAMESPACE}_att"."category" ("id", "code", "eservice", "description", "order") VALUES
+    INSERT INTO "${NAMESPACE}"."category" ("id", "code", "eservice", "description", "order") VALUES
     (1, 'VOUCHER', 'residence-verification,fiscalcode-verification,piva-verification,digital-address-verification-verify,digital-address-verification-extract', 'bearer token', 1),
     (2, 'Agid-JWT-Signature', 'residence-verification', 'token in Headers', 2),
     (3, 'Agid-JWT-TrackingEvidence', 'residence-verification', 'token in Headers', 3),
@@ -427,7 +427,7 @@ data:
     (16, 'e-service', 'residence-submission-001', 'API per l invio di una residenza', 5)
     ON CONFLICT (id) DO NOTHING;
 
-    INSERT INTO "${NAMESPACE}_att"."check" ("id", "code", "description", "order", "category_id") VALUES
+    INSERT INTO "${NAMESPACE}"."check" ("id", "code", "description", "order", "category_id") VALUES
     (1, 'authData', 'Bearer token can not be parsed', 1, 1),
     (2, 'header', 'not present', 2, 1),
     (3, 'payload', 'not present', 3, 1),
@@ -492,17 +492,17 @@ data:
     (62, 'SIGNATURE_EXP_INVALID', '"exp" claim is missing or token has expired', 25, 2),
     (63, 'PSEUDONYMIZATION_001', 'Pseudonymization service', 5, 5)
   V1.4__grant_on_sequences.sql: |-
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".trial_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".digital_addresses_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".subject_data_responses_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".verification_logs_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".fiscal_codes_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".category_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".check_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".check_category_id_seq TO "${NAMESPACE}_att_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".trial_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".digital_addresses_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".subject_data_responses_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".verification_logs_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".fiscal_codes_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".category_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".check_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".check_category_id_seq TO "${NAMESPACE}_eservices_residence_submission_user";
   V1.5__grant_on_trial_table_residence_verification.sql: |-
-    GRANT INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".trial TO "${NAMESPACE}_eservices_residence_verification_user";
   V1.5.1__grant_on_trial_seq_residence_verification.sql: |-
-    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".trial_id_seq TO "${NAMESPACE}_att_eservices_residence_verification_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".trial_id_seq TO "${NAMESPACE}_eservices_residence_verification_user";
   V1.6__add_readonly_grants.sql: |-
-    ALTER DEFAULT PRIVILEGES IN SCHEMA "${NAMESPACE}_att" GRANT SELECT ON TABLES TO readonly_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "${NAMESPACE}" GRANT SELECT ON TABLES TO readonly_user;
