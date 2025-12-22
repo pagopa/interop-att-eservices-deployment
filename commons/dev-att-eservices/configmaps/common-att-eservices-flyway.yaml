@@ -504,3 +504,5 @@ data:
     GRANT INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".trial TO "${NAMESPACE}_att_eservices_residence_verification_user";
   V1.5.1__grant_on_trial_seq_residence_verification.sql: |-
     GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}_att".trial_id_seq TO "${NAMESPACE}_att_eservices_residence_verification_user";
+  V1.6__add_readonly_grants.sql: |-
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "${NAMESPACE}_att" GRANT SELECT ON TABLES TO readonly_user;
