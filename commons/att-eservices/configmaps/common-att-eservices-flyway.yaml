@@ -506,3 +506,5 @@ data:
     GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".trial_id_seq TO "${NAMESPACE}_eservices_residence_verification_user";
   V1.6__add_readonly_grants.sql: |-
     ALTER DEFAULT PRIVILEGES IN SCHEMA "${NAMESPACE}" GRANT SELECT ON TABLES TO readonly_user;
+  V1.6.1__add_readonly_grants_for_act_tables.sql: |-
+    GRANT USAGE ON SCHEMA "${NAMESPACE}" TO readonly_user;
