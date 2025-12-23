@@ -37,7 +37,7 @@ configmap:
   M2M_TOKEN_ENDPOINT: "https://auth.att.interop.pagopa.it/token.oauth2"
   M2M_PRIVATE_KEY_PATH: "../client-anpr-residence-verification-mockup/keys/client-test-keypair.rsa.priv"
   M2M_KMS_KID: "18e39018-4426-44bf-bf3c-b4a726022572"
-  M2M_CLIENT_ID: "ce66ce10-d064-4d3c-ac8f-fb48b992879b"
+  M2M_CLIENT_ID: "c3262bd5-c68a-4e0b-9594-77d7e60d0ed4"
   M2M_AUTH_AUDIENCE: "att.interop.pagopa.it/m2m"
   M2M_ROLE: "m2m"
   M2M_ORG_ID: "1013dbf7-1124-4daa-8e85-ac9313d5dc61"
