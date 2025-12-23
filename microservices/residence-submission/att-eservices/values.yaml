@@ -15,7 +15,7 @@ configmap:
   SKIP_JWT_VERIFICATION: "false"
   WELL_KNOWN_URLS: "https://att.interop.pagopa.it/.well-known/jwks.json"
   TOKEN_ISS: "att.interop.pagopa.it"
-  TOKEN_AUD: " https://eservices.att.interop.pagopa.it/residence-submission"
+  TOKEN_AUD: "https://eservices.att.interop.pagopa.it/residence-submission"
   TOKEN_TYP: "at+jwt"
   SKIP_INTEROPERABILITY_VERIFICATION: "false"
   SKIP_AGID_PAYLOAD_VERIFICATION: "false"
