@@ -508,3 +508,6 @@ data:
     ALTER DEFAULT PRIVILEGES IN SCHEMA "${NAMESPACE}" GRANT SELECT ON TABLES TO readonly_user;
   V1.6.1__add_readonly_grants_for_act_tables.sql: |-
     GRANT USAGE ON SCHEMA "${NAMESPACE}" TO readonly_user;
+  V1.6.2__add_readonly_grants_for_act_tables_refactor.sql: |-
+    GRANT SELECT ON ALL TABLES IN SCHEMA "${NAMESPACE}" TO readonly_user;
+    GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA "${NAMESPACE}" TO readonly_user;
