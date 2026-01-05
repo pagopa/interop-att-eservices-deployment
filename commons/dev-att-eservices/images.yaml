@@ -4,3 +4,6 @@ images:
       tag: "develop"
     residence-verification:
       tag: "develop"
+  jobs:
+    signal-job:
+      tag: "develop"
