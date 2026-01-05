@@ -32,7 +32,7 @@ configmap:
   M2M_KID: "FPg1nEE5d6N4J8dngfvBkywXXxS5DVPFyWXcGWnEj2g"
 
 cronjob:
-  schedule: "0 8-20 * * 1-5" #TBD
+  schedule: "0 8-20 * * 1-5"
   timeZone: "Europe/Rome"
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 1
