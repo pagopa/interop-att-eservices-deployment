@@ -509,7 +509,7 @@ data:
   V1.7__add_signal_job_grants.sql: |-
     GRANT USAGE ON SCHEMA "${NAMESPACE}_att" TO "${NAMESPACE}_att_eservices_signal_job_user";
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_att_eservices_signal_job_user;
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".data_preparation TO "${NAMESPACE}_att_eservices_signal_job_user";
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".digital_addresses TO "${NAMESPACE}_att_eservices_signal_job_user";
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".list_requests TO "${NAMESPACE}_att_eservices_signal_job_user";
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_att".request_subjects TO "${NAMESPACE}_att_eservices_signal_job_user";
