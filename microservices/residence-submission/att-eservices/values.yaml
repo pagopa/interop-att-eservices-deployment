@@ -41,8 +41,8 @@ configmap:
   M2M_AUTH_AUDIENCE: "att.interop.pagopa.it/m2m"
   M2M_ROLE: "m2m"
   M2M_ORG_ID: "1013dbf7-1124-4daa-8e85-ac9313d5dc61"
-  PURPOSE_ID: "92e1624b-91cb-4b05-b8c0-cad208a30656"
-  CLIENT_ID: "7f9f24ca-78f5-4c69-9e4f-0efbeac7aa1a"
+  PURPOSE_ID: "9c189e6c-2d22-4fa2-90f4-d498ea4d87c2"
+  CLIENT_ID: "78ddd4d6-88aa-4072-abc1-b86055f32e6a"
   CORRELATION_ID: "bfbcb93c-58ab-4018-badf-d052294ac052"
   SKIP_DIGEST_CHECK: "true"
 
