@@ -15,7 +15,7 @@ configmap:
   SKIP_JWT_VERIFICATION: "false"
   WELL_KNOWN_URLS: "https://dev.interop.pagopa.it/.well-known/jwks.json"
   TOKEN_ISS: "dev.interop.pagopa.it"
-  TOKEN_AUD: "https://modipa-val.anpr.interno.it/govway/rest/in/MinInternoPortaANPR/C008-servizioVerificaDichResidenza/v1"
+  TOKEN_AUD: "https://eservices.dev.interop.pagopa.it/residence-verification"
   TOKEN_TYP: "at+jwt"
   SKIP_INTEROPERABILITY_VERIFICATION: "false"
   SKIP_AGID_PAYLOAD_VERIFICATION: "false"
@@ -34,9 +34,10 @@ configmap:
   START_DATE_MS: "2024-01-01T00:00:00.000Z"
   ALG: "RS256"
   TYP: "JWT"
-  PURPOSE_ID: "92e1624b-91cb-4b05-b8c0-cad208a30656"
-  CLIENT_ID: "7f9f24ca-78f5-4c69-9e4f-0efbeac7aa1a"
+  PURPOSE_ID: "5a10da41-65b1-4c60-8619-e56e5a747443"
+  CLIENT_ID: "313fa1d8-1042-41e8-a06a-f845fed5d668"
   CORRELATION_ID: "bfbcb93c-58ab-4018-badf-d052294ac052"
+  SKIP_DIGEST_CHECK: "false"
 
 deployment:
   flywayInitContainer:
@@ -57,7 +58,7 @@ deployment:
     envFromSecrets:
       FLYWAY_USER: "platform-data-att-eservices-flyway-user.username"
       FLYWAY_PASSWORD: "platform-data-att-eservices-flyway-user.password"
-      
+
   env:
     HOST: "0.0.0.0"
     PORT: "8080"
@@ -70,7 +71,7 @@ deployment:
   envFromSecrets:
     DATABASE_USERNAME: "platform-data-att-eservices-residence-verification-user.username"
     DATABASE_PASSWORD: "platform-data-att-eservices-residence-verification-user.password"
-    
+
   livenessProbe:
     httpGet:
       path: /residence-verification/status
