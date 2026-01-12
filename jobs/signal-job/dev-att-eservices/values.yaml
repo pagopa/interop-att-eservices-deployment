@@ -4,7 +4,6 @@ serviceAccount:
   roleArn: "arn:aws:iam::{{.Values.local.awsAccountId}}:role/interop-att-eservices-signal-job-dev"
 
 configmap:
-  LOG_LEVEL: "info"
   LOGGER_SILENT: "false"
   SKIP_JWT_VERIFICATION: "false"
   WELL_KNOWN_URLS: "https://dev.interop.pagopa.it/.well-known/jwks.json"
@@ -60,7 +59,6 @@ cronjob:
       FLYWAY_USER: "platform-data-att-eservices-flyway-user.username"
       FLYWAY_PASSWORD: "platform-data-att-eservices-flyway-user.password"
 
-  env:
   envFromConfigmaps:
     DATABASE_HOST: "common-att-eservices-data.DB_HOST"
     DATABASE_PORT: "common-att-eservices-data.DB_PORT"
