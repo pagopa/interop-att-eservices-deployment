@@ -4,6 +4,7 @@ serviceAccount:
   roleArn: "arn:aws:iam::{{.Values.local.awsAccountId}}:role/interop-att-eservices-signal-job-dev"
 
 configmap:
+  LOG_LEVEL: "info"
   LOGGER_SILENT: "false"
   SKIP_JWT_VERIFICATION: "false"
   WELL_KNOWN_URLS: "https://dev.interop.pagopa.it/.well-known/jwks.json"
@@ -34,7 +35,7 @@ configmap:
   M2M_ORG_ID: "69e2865e-65ab-4e48-a638-2037a9ee2ee7"
 
 cronjob:
-  schedule: "0 8-20 * * 1-5"
+  schedule: "*/5 8-20 * * 1-5"
   timeZone: "Europe/Rome"
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 1
