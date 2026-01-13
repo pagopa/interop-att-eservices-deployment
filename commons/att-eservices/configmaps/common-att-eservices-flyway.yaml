@@ -511,3 +511,33 @@ data:
   V1.6.2__add_readonly_grants_for_act_tables_refactor.sql: |-
     GRANT SELECT ON ALL TABLES IN SCHEMA "${NAMESPACE}" TO readonly_user;
     GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA "${NAMESPACE}" TO readonly_user;
+  V1.7__add_signal_job_grants.sql: |-
+    GRANT USAGE ON SCHEMA "${NAMESPACE}" TO "${NAMESPACE}_eservices_signal_job_user";
+
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".data_preparation TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".digital_addresses TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".list_requests TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".request_subjects TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".subject_data_responses TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".verification_logs TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".verification_requests TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".purposes TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".family_status TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".addresses TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".subjects TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".fiscal_codes TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".piva TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".category TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".check TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".trial TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".handshakes TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}".signal_counters TO "${NAMESPACE}_eservices_signal_job_user";
+
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".trial_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".digital_addresses_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".subject_data_responses_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".verification_logs_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".fiscal_codes_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".category_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".check_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
+    GRANT USAGE, SELECT ON SEQUENCE "${NAMESPACE}".check_category_id_seq TO "${NAMESPACE}_eservices_signal_job_user";
