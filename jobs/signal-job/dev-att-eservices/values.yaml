@@ -32,6 +32,9 @@ configmap:
   M2M_KMS_KID: "08bdbbc0-9821-4822-b946-49e999579b1c"
   M2M_ROLE: "m2m"
   M2M_ORG_ID: "69e2865e-65ab-4e48-a638-2037a9ee2ee7"
+  PURPOSE_ID: "5a10da41-65b1-4c60-8619-e56e5a747443"
+  CLIENT_ID: "313fa1d8-1042-41e8-a06a-f845fed5d668"
+  CORRELATION_ID: "bfbcb93c-58ab-4018-badf-d052294ac052"
 
 cronjob:
   schedule: "*/5 8-20 * * 1-5"
