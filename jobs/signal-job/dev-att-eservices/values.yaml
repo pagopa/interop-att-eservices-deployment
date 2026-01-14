@@ -37,7 +37,7 @@ configmap:
   CORRELATION_ID: "bfbcb93c-58ab-4018-badf-d052294ac052"
 
 cronjob:
-  schedule: "*/5 8-20 * * 1-5"
+  schedule: "0 8-20 * * 1-5"
   timeZone: "Europe/Rome"
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 1
